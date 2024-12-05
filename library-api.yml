@@ -1,10 +1,13 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: Library Management API
   version: 1.0.0
   description: API for managing books and authors in a library.
 servers:
-  - url: http://localhost:3000
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/HEIFABIO2/library-management_api/1.0.0
+  - url: /
 paths:
   /books:
     get:
