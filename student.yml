@@ -1,0 +1,213 @@
+openapi: 3.0.3
+info:
+  title: Student and Group Management API
+  version: 1.0.0
+  description: API for managing student groups and individual students.
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/HEIFABIO2/student-and_group_management_api/1.0.0
+  - url: /
+tags:
+  - name: Groups
+    description: Operations related to student groups
+  - name: Students
+    description: Operations related to students
+paths:
+  /groups:
+    get:
+      tags:
+        - Groups
+      summary: Get all groups
+      description: Retrieve a list of groups with optional filters for groupName and groupYear.
+      parameters:
+        - name: groupName
+          in: query
+          description: Filter groups by name
+          required: false
+          schema:
+            type: string
+        - name: groupYear
+          in: query
+          description: Filter groups by a range of years
+          required: false
+          schema:
+            type: string
+            example: "2020-2023"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Group"
+    post:
+      tags:
+        - Groups
+      summary: Create a new group
+      description: Add a new student group.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Group"
+      responses:
+        "201":
+          description: Group created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+    put:
+      tags:
+        - Groups
+      summary: Update an existing group
+      description: Update a group by providing its ID and updated details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Group"
+      responses:
+        "200":
+          description: Group updated successfully
+    delete:
+      tags:
+        - Groups
+      summary: Delete a group
+      description: Delete a group by ID.
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID of the group to delete
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Group deleted successfully
+  /students:
+    get:
+      tags:
+        - Students
+      summary: Get all students
+      description: Retrieve a list of students with optional filters for studentName.
+      parameters:
+        - name: fabio
+          in: query
+          description: Filter students by name
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Student"
+    post:
+      tags:
+        - Students
+      summary: Create a new student
+      description: Add a new student.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+      responses:
+        "201":
+          description: Student created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+    put:
+      tags:
+        - Students
+      summary: Update an existing student
+      description: Update a student by providing their ID and updated details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+      responses:
+        "200":
+          description: Student updated successfully
+    delete:
+      tags:
+        - Students
+      summary: Delete a student
+      description: Delete a student by ID.
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID of the student to delete
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Student deleted successfully
+components:
+  schemas:
+    Group:
+      type: object
+      required:
+        - groupName
+        - groupYear
+        - promotion
+      properties:
+        id:
+          type: integer
+        groupName:
+          type: string
+          example: J1
+        groupYear:
+          type: string
+          format: date
+          example: "2023"
+        promotion:
+          type: string
+          enum: [G, H, J, K]
+        studentNb:
+          type: integer
+        students:
+          type: array
+          items:
+            $ref: "#/components/schemas/Student"
+    Student:
+      type: object
+      required:
+        - name
+        - sex
+        - birthdate
+        - reference
+        - group
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        sex:
+          type: string
+          enum: [M, F]
+        birthdate:
+          type: string
+          format: date
+        reference:
+          type: string
+          example: STD23000
+        group:
+          type: string
+          example: J1
